@@ -17,9 +17,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-            
+          cache: 'pip' # ⚡ Speeds up test dependency installation
+
       - name: Install the dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
             
       - name: Run Tests
@@ -49,6 +51,8 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/flasktest-app:latest
+          cache-from: type=gha # ⚡ Pulls previous layers from GitHub cache
+          cache-to: type=gha,mode=max # ⚡ Saves layers to GitHub cache for next time
 
       - name: Image Digest
         run: echo ${{ steps.docker_build.outputs.digest }}
