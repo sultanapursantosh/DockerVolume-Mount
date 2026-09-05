@@ -1,8 +1,9 @@
 from flask import Flask
 import logging
+import os
 
 app = Flask(__name__)
-
+os.makedirs("logs", exist_ok=True)
 logging.basicConfig(
     filename="logs/app.log",
     level=logging.DEBUG,
